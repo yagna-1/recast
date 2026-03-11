@@ -1,8 +1,32 @@
-# recast
+<p align="center">
+  <img src="./assets/logo/recast-cover.svg" alt="recast cover" width="100%" />
+</p>
 
-> Turn any AI browser run into clean, production Playwright code.
+<h1 align="center">
+  <code>recast</code>
+</h1>
 
-`recast` is a compiler that takes AI browser agent recordings and emits clean, readable, static Playwright test code — with no LLM required at replay time, no proprietary runtime dependencies, and no magic.
+<p align="center">
+  <img src="./assets/logo/recast-logo.svg" alt="recast logo mark" width="120" />
+</p>
+
+<p align="center">
+  <strong>Turn any AI browser run into clean, production Playwright code.</strong>
+</p>
+
+<p align="center">
+  <a href="https://go.dev/">
+    <img src="https://img.shields.io/badge/Go-1.22+-00ADD8?logo=go&logoColor=white" alt="Go version" />
+  </a>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-black" alt="MIT license" />
+  </a>
+  <a href="https://github.com/yagna-1/recast/actions/workflows/ci.yml">
+    <img src="https://img.shields.io/github/actions/workflow/status/yagna-1/recast/ci.yml?label=CI" alt="CI status" />
+  </a>
+</p>
+
+`recast` is a compiler that takes AI browser agent recordings and emits clean, readable, static Playwright test code - with no LLM required at replay time, no proprietary runtime dependencies, and no magic.
 
 ```
 workflow-use JSON  ──┐
@@ -21,10 +45,10 @@ AI browser agents (workflow-use, browser-use, Skyvern, Operator) re-reason throu
 
 ```bash
 # Go install
-go install github.com/yourorg/recast/cmd/recast@latest
+go install github.com/yagna-1/recast/cmd/recast@latest
 
 # Build from source
-git clone https://github.com/yourorg/recast
+git clone https://github.com/yagna-1/recast
 cd recast
 go mod tidy
 make build
@@ -223,7 +247,7 @@ The IR package (`recast-ir`) is published as a standalone Go module so agent fra
 ## Development
 
 ```bash
-git clone https://github.com/yourorg/recast
+git clone https://github.com/yagna-1/recast
 cd recast
 go mod tidy     # fetch cobra, viper, testify (populates go.sum)
 make test       # all unit tests

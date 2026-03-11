@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/yourorg/recast/internal/ingestion"
-	ir "github.com/yourorg/recast/recast-ir"
+	"github.com/yagna-1/recast/internal/ingestion"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 var loginWorkflowJSON = []byte(`{

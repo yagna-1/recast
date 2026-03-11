@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	ir "github.com/yourorg/recast/recast-ir"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 type Ingester interface {

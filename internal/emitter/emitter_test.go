@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/yourorg/recast/internal/emitter"
-	ir "github.com/yourorg/recast/recast-ir"
+	"github.com/yagna-1/recast/internal/emitter"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 func buildLoginTrace() *ir.Trace {

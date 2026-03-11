@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	ir "github.com/yourorg/recast/recast-ir"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 func TestTraceBuilder_BasicWorkflow(t *testing.T) {

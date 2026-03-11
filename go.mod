@@ -1,4 +1,4 @@
-module github.com/yourorg/recast
+module github.com/yagna-1/recast
 
 go 1.22
 

@@ -9,10 +9,10 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/yourorg/recast/internal/emitter"
-	"github.com/yourorg/recast/internal/ingestion"
-	"github.com/yourorg/recast/internal/optimizer"
-	ir "github.com/yourorg/recast/recast-ir"
+	"github.com/yagna-1/recast/internal/emitter"
+	"github.com/yagna-1/recast/internal/ingestion"
+	"github.com/yagna-1/recast/internal/optimizer"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 var update = flag.Bool("update", false, "update golden files instead of asserting")

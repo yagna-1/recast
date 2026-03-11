@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	ir "github.com/yourorg/recast/recast-ir"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 type Emitter interface {

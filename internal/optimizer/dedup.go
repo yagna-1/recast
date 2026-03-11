@@ -3,7 +3,7 @@ package optimizer
 import (
 	"fmt"
 
-	ir "github.com/yourorg/recast/recast-ir"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 func runDedup(trace *ir.Trace) (*ir.Trace, []ir.Warning, int) {

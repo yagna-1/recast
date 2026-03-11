@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/yourorg/recast/internal/emitter"
-	"github.com/yourorg/recast/internal/ingestion"
-	"github.com/yourorg/recast/internal/optimizer"
-	ir "github.com/yourorg/recast/recast-ir"
+	"github.com/yagna-1/recast/internal/emitter"
+	"github.com/yagna-1/recast/internal/ingestion"
+	"github.com/yagna-1/recast/internal/optimizer"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 const (

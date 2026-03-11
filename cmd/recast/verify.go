@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/yourorg/recast/internal/ingestion"
-	ir "github.com/yourorg/recast/recast-ir"
+	"github.com/yagna-1/recast/internal/ingestion"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 type verifySignal struct {

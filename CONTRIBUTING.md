@@ -10,7 +10,7 @@ Requirements:
 Setup:
 
 ```bash
-git clone https://github.com/yourorg/recast
+git clone https://github.com/yagna-1/recast
 cd recast
 go mod tidy
 ```

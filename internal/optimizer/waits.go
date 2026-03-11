@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	ir "github.com/yourorg/recast/recast-ir"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 func runWaitInference(trace *ir.Trace) (*ir.Trace, []ir.Warning) {

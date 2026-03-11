@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/yourorg/recast/internal/optimizer"
-	ir "github.com/yourorg/recast/recast-ir"
+	"github.com/yagna-1/recast/internal/optimizer"
+	ir "github.com/yagna-1/recast/recast-ir"
 )
 
 func makeTrace(steps ...ir.Step) *ir.Trace {
