@@ -1,13 +1,5 @@
 <p align="center">
-  <img src="./assets/logo/recast-cover.svg" alt="recast cover" width="100%" />
-</p>
-
-<h1 align="center">
-  <code>recast</code>
-</h1>
-
-<p align="center">
-  <img src="./assets/logo/recast-logo.svg" alt="recast logo mark" width="120" />
+  <img src="./assets/logo/recast-cover.svg" alt="recast cover" width="78%" />
 </p>
 
 <p align="center">
