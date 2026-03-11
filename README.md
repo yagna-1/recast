@@ -1,7 +1,7 @@
-<p align="center">
+<p align="center" style="margin: 0;">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/logo/recast-cover.svg" />
-    <img src="./assets/logo/recast-cover-light.svg" alt="recast cover" width="78%" />
+    <img src="./assets/logo/recast-cover-light.svg" alt="recast cover" width="78%" style="display:block; margin:-28px auto -28px auto;" />
   </picture>
 </p>
 
