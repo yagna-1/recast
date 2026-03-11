@@ -1,0 +1,24 @@
+import os
+from playwright.sync_api import sync_playwright, expect
+
+
+def test_login_and_download(page):
+    page.goto("https://app.example.com/login")
+    page.wait_for_load_state('networkidle')
+
+    # sanitized → TEST_EMAIL (detected: email pattern)
+    # the email input field
+    page.locator("#email").fill(os.environ["TEST_EMAIL"])
+
+    # the password input field
+    page.locator("#password").fill("hunter2")
+
+    # the Sign in button
+    page.get_by_role("button", name="Submit").click()
+    page.wait_for_url('**/*', timeout=10000)
+
+    page.locator(".dashboard").wait_for(state='visible', timeout=30000)
+
+    # the Download invoice link
+    page.locator("a.download-invoice").click()
+

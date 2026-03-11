@@ -1,0 +1,9 @@
+{
+  "workflow_name": "checkout",
+  "steps": [
+    { "type": "navigate", "url": "https://shop.example.com/cart" },
+    { "type": "fill", "selector": "", "value": "hunter2" },
+    { "type": "click", "selector": "div.MuiButton-root.css-1q2w3e4r", "description": "Proceed to Checkout button" },
+    { "type": "frobnicate", "selector": "#submit" }
+  ]
+}

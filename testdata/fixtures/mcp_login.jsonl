@@ -1,0 +1,8 @@
+[
+  {"type": "tool_call", "tool": "browser_navigate", "params": {"url": "https://app.example.com"}},
+  {"type": "tool_call", "tool": "browser_click", "params": {"element": "Login button", "selector": "[data-testid=\"login-btn\"]"}},
+  {"type": "tool_call", "tool": "browser_fill", "params": {"element": "email field", "selector": "#email", "text": "test@example.com"}},
+  {"type": "tool_call", "tool": "browser_fill", "params": {"element": "password field", "selector": "#password", "text": "s3cr3t!pass"}},
+  {"type": "tool_call", "tool": "browser_click", "params": {"element": "Submit button", "selector": "button[type=submit]"}},
+  {"type": "tool_call", "tool": "browser_screenshot", "params": {}}
+]

@@ -1,0 +1,12 @@
+{
+  "workflow_name": "login_and_download",
+  "base_url": "https://app.example.com",
+  "steps": [
+    { "type": "navigate", "url": "https://app.example.com/login" },
+    { "type": "fill", "selector": "#email", "value": "user@example.com", "description": "the email input field" },
+    { "type": "fill", "selector": "#password", "value": "hunter2", "description": "the password input field" },
+    { "type": "click", "selector": "button[type=submit]", "description": "the Sign in button" },
+    { "type": "wait_for", "selector": ".dashboard" },
+    { "type": "click", "selector": "a.download-invoice", "description": "the Download invoice link" }
+  ]
+}

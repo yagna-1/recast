@@ -1,0 +1,257 @@
+{
+  "workflow_name": "internet_form_filling_workflow_use",
+  "base_url": "https://v0-complex-form-example.vercel.app",
+  "steps": [
+    {
+      "type": "navigate",
+      "url": "https://v0-complex-form-example.vercel.app/"
+    },
+    {
+      "type": "click",
+      "selector": "text=Start Application"
+    },
+    {
+      "type": "click",
+      "selector": "#firstName"
+    },
+    {
+      "type": "click",
+      "selector": "#lastName"
+    },
+    {
+      "type": "fill",
+      "selector": "#lastName",
+      "value": "Panda"
+    },
+    {
+      "type": "click",
+      "selector": "#firstName"
+    },
+    {
+      "type": "fill",
+      "selector": "#firstName",
+      "value": "Saurav"
+    },
+    {
+      "type": "click",
+      "selector": "#socialSecurityLast4"
+    },
+    {
+      "type": "fill",
+      "selector": "#socialSecurityLast4",
+      "value": "1234"
+    },
+    {
+      "type": "click",
+      "selector": "button.aspect-square.h-4.w-4.rounded-full.border.border-primary.text-primary.ring-offset-background[type=\"button\"][role=\"radio\"][id=\"male\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"radio\"]"
+    },
+    {
+      "type": "click",
+      "selector": "#single"
+    },
+    {
+      "type": "click",
+      "selector": "button.aspect-square.h-4.w-4.rounded-full.border.border-primary.text-primary.ring-offset-background[type=\"button\"][role=\"radio\"][id=\"single\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"radio\"]"
+    },
+    {
+      "type": "scroll",
+      "value": "119"
+    },
+    {
+      "type": "click",
+      "selector": "text=Next: Contact Information"
+    },
+    {
+      "type": "scroll",
+      "value": "116"
+    },
+    {
+      "type": "click",
+      "selector": "#primaryPhone"
+    },
+    {
+      "type": "fill",
+      "selector": "#primaryPhone",
+      "value": "9177046644"
+    },
+    {
+      "type": "click",
+      "selector": "button.aspect-square.h-4.w-4.rounded-full.border.border-primary.text-primary.ring-offset-background[type=\"button\"][role=\"radio\"][id=\"phone-mobile\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"radio\"]"
+    },
+    {
+      "type": "click",
+      "selector": "#email"
+    },
+    {
+      "type": "fill",
+      "selector": "#email",
+      "value": "sgp65@cornell.edu"
+    },
+    {
+      "type": "click",
+      "selector": "#confirmEmail"
+    },
+    {
+      "type": "fill",
+      "selector": "#confirmEmail",
+      "value": "sgp65@cornell.edu"
+    },
+    {
+      "type": "click",
+      "selector": "text=Primary Phone Number *"
+    },
+    {
+      "type": "click",
+      "selector": "#streetAddress1"
+    },
+    {
+      "type": "fill",
+      "selector": "#streetAddress1",
+      "value": "123 main st"
+    },
+    {
+      "type": "scroll",
+      "value": "278"
+    },
+    {
+      "type": "click",
+      "selector": "#city"
+    },
+    {
+      "type": "fill",
+      "selector": "#city",
+      "value": "SF"
+    },
+    {
+      "type": "click",
+      "selector": "#state"
+    },
+    {
+      "type": "fill",
+      "selector": "#state",
+      "value": "CA"
+    },
+    {
+      "type": "scroll",
+      "value": "716"
+    },
+    {
+      "type": "click",
+      "selector": "#zipCode"
+    },
+    {
+      "type": "fill",
+      "selector": "#zipCode",
+      "value": "12345"
+    },
+    {
+      "type": "click",
+      "selector": "#county"
+    },
+    {
+      "type": "fill",
+      "selector": "#county",
+      "value": "CA"
+    },
+    {
+      "type": "click",
+      "selector": "button.aspect-square.h-4.w-4.rounded-full.border.border-primary.text-primary.ring-offset-background[type=\"button\"][role=\"radio\"][id=\"residence-own\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"radio\"]"
+    },
+    {
+      "type": "scroll",
+      "value": "747"
+    },
+    {
+      "type": "click",
+      "selector": "text=Next: Employment Information"
+    },
+    {
+      "type": "scroll",
+      "value": "0"
+    },
+    {
+      "type": "click",
+      "selector": "button.aspect-square.h-4.w-4.rounded-full.border.border-primary.text-primary.ring-offset-background[type=\"button\"][role=\"radio\"][id=\"student\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"radio\"]"
+    },
+    {
+      "type": "scroll",
+      "value": "346"
+    },
+    {
+      "type": "click",
+      "selector": "button.aspect-square.h-4.w-4.rounded-full.border.border-primary.text-primary.ring-offset-background[type=\"button\"][role=\"radio\"][id=\"contact-email\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"radio\"]"
+    },
+    {
+      "type": "click",
+      "selector": "text=Next: Review Application"
+    },
+    {
+      "type": "scroll",
+      "value": "0"
+    },
+    {
+      "type": "scroll",
+      "value": "408"
+    },
+    {
+      "type": "scroll",
+      "value": "268"
+    },
+    {
+      "type": "click",
+      "selector": "button.peer.h-4.w-4.shrink-0.rounded-sm.border.border-primary.ring-offset-background[type=\"button\"][role=\"checkbox\"][id=\"terms\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"checkbox\"]"
+    },
+    {
+      "type": "click",
+      "selector": "button.peer.h-4.w-4.shrink-0.rounded-sm.border.border-primary.ring-offset-background[type=\"button\"][role=\"checkbox\"][id=\"privacy\"]"
+    },
+    {
+      "type": "click",
+      "selector": "input[type=\"checkbox\"]"
+    },
+    {
+      "type": "click",
+      "selector": "button.inline-flex.items-center.justify-center.gap-2.whitespace-nowrap.rounded-md.text-sm.font-medium.ring-offset-background.transition-colors.bg-primary.text-primary-foreground.h-10.px-4.py-2[type=\"submit\"]"
+    },
+    {
+      "type": "scroll",
+      "value": "0"
+    },
+    {
+      "type": "click",
+      "selector": "button.inline-flex.items-center.justify-center.gap-2.whitespace-nowrap.rounded-md.text-sm.font-medium.ring-offset-background.transition-colors.bg-primary.text-primary-foreground.h-10.px-4.py-2.w-full.max-w-xs"
+    }
+  ],
+  "metadata": {
+    "agent_model": "unknown",
+    "recorded_at": "internet-source"
+  }
+}
