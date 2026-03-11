@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="./assets/logo/recast-cover.svg" alt="recast cover" width="78%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/logo/recast-cover.svg" />
+    <img src="./assets/logo/recast-cover-light.svg" alt="recast cover" width="78%" />
+  </picture>
 </p>
 
 <p align="center">
