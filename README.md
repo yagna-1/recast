@@ -19,6 +19,9 @@
   <a href="https://github.com/yagna-1/recast/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/yagna-1/recast/ci.yml?label=CI" alt="CI status" />
   </a>
+  <a href="https://github.com/yagna-1/recast/releases/latest">
+    <img src="https://img.shields.io/github/v/release/yagna-1/recast?label=release&color=brightgreen" alt="Latest release" />
+  </a>
   <a href="https://github.com/yagna-1/recast/issues?q=is%3Aopen+label%3A%22good+first+issue%22">
     <img src="https://img.shields.io/github/issues/yagna-1/recast/good%20first%20issue?label=good%20first%20issues&color=7057ff" alt="Good first issues" />
   </a>
@@ -76,11 +79,33 @@ test('login_workflow', async ({ page }) => {
 
 ## Install
 
-```bash
-# Go install
-go install github.com/yagna-1/recast/cmd/recast@latest
+**Download a pre-built binary** (no Go required):
 
-# Build from source
+```bash
+# macOS arm64 (Apple Silicon)
+curl -L https://github.com/yagna-1/recast/releases/latest/download/recast_darwin_arm64.tar.gz | tar xz
+sudo mv recast /usr/local/bin/
+
+# macOS x86_64 (Intel)
+curl -L https://github.com/yagna-1/recast/releases/latest/download/recast_darwin_x86_64.tar.gz | tar xz
+sudo mv recast /usr/local/bin/
+
+# Linux x86_64
+curl -L https://github.com/yagna-1/recast/releases/latest/download/recast_linux_x86_64.tar.gz | tar xz
+sudo mv recast /usr/local/bin/
+```
+
+Or grab the `.zip` for Windows from the [releases page](https://github.com/yagna-1/recast/releases/latest).
+
+**Go install:**
+
+```bash
+go install github.com/yagna-1/recast/cmd/recast@latest
+```
+
+**Build from source:**
+
+```bash
 git clone https://github.com/yagna-1/recast
 cd recast
 go mod tidy

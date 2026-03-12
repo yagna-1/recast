@@ -1,0 +1,105 @@
+version: 2
+
+project_name: recast
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: recast
+    main: ./cmd/recast
+    binary: recast
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+
+archives:
+  - id: recast
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "arm64" }}arm64
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+      - Merge pull request
+      - Merge branch
+  groups:
+    - title: New Features
+      regexp: "^feat"
+      order: 0
+    - title: Bug Fixes
+      regexp: "^fix"
+      order: 1
+    - title: Improvements
+      regexp: "^(refactor|perf|chore)"
+      order: 2
+    - title: Other
+      order: 999
+
+release:
+  github:
+    owner: yagna-1
+    name: recast
+  name_template: "v{{ .Version }}"
+  header: |
+    ## recast {{ .Version }}
+
+    A compiler that turns AI browser agent recordings into clean, production-ready Playwright test code.
+
+    ### Install
+
+    **macOS / Linux (curl)**
+    ```bash
+    # macOS arm64
+    curl -L https://github.com/yagna-1/recast/releases/download/{{ .Tag }}/recast_darwin_arm64.tar.gz | tar xz
+    sudo mv recast /usr/local/bin/
+
+    # macOS x86_64
+    curl -L https://github.com/yagna-1/recast/releases/download/{{ .Tag }}/recast_darwin_x86_64.tar.gz | tar xz
+    sudo mv recast /usr/local/bin/
+
+    # Linux x86_64
+    curl -L https://github.com/yagna-1/recast/releases/download/{{ .Tag }}/recast_linux_x86_64.tar.gz | tar xz
+    sudo mv recast /usr/local/bin/
+    ```
+
+    **Go install**
+    ```bash
+    go install github.com/yagna-1/recast/cmd/recast@{{ .Tag }}
+    ```
+  footer: |
+    **Full changelog**: https://github.com/yagna-1/recast/compare/{{ .PreviousTag }}...{{ .Tag }}
