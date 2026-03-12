@@ -21,4 +21,3 @@ func TestParseFile_SizeGuardStat(t *testing.T) {
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "exceeds 50MB limit")
 }
-
