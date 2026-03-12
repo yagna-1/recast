@@ -19,9 +19,7 @@ test('mcp_workflow', async ({ page }) => {
   await page.locator('#password').fill(process.env.TEST_PASSWORD!);
 
   // Submit button
-  await page.getByRole('button', { name: 'Submit' })
-      .or(page.locator('button[type=submit]'))
-    .click();
+  await page.locator('button[type=submit]').click();
   await page.waitForNavigation({ timeout: 10000 });
 
   await page.screenshot({ path: 'screenshot.png' });

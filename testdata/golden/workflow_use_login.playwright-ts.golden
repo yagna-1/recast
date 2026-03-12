@@ -12,9 +12,7 @@ test('login_and_download', async ({ page }) => {
   await page.locator('#password').fill('hunter2');
 
   // the Sign in button
-  await page.getByRole('button', { name: 'Submit' })
-      .or(page.locator('button[type=submit]'))
-    .click();
+  await page.locator('button[type=submit]').click();
   await page.waitForNavigation({ timeout: 10000 });
 
   await page.locator('.dashboard').waitFor({ state: 'visible', timeout: 30000 });

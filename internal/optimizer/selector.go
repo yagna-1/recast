@@ -93,10 +93,6 @@ func inferLocatorFromCSS(selector string) (string, ir.LocatorStrategy, string) {
 		return fmt.Sprintf("[data-pw=%q]", m[1]), ir.LocatorTestID, ""
 	}
 
-	if reSubmitBtn.MatchString(selector) {
-		return `role=button[name="Submit"]`, ir.LocatorRole, "the Submit button"
-	}
-
 	if reEmailInput.MatchString(selector) {
 		return `input[type="email"]`, ir.LocatorCSS, "the email input field"
 	}
@@ -142,7 +138,6 @@ func looksGenerated(s string) bool {
 var (
 	reTestID        = regexp.MustCompile(`\[data-testid=["']?([^"'\]]+)["']?\]`)
 	reDataPW        = regexp.MustCompile(`\[data-pw=["']?([^"'\]]+)["']?\]`)
-	reSubmitBtn     = regexp.MustCompile(`button\[type=["']?submit["']?\]`)
 	reEmailInput    = regexp.MustCompile(`input\[type=["']?email["']?\]`)
 	rePasswordInput = regexp.MustCompile(`input\[type=["']?password["']?\]`)
 	reAriaLabel     = regexp.MustCompile(`\[aria-label=["']?([^"'\]]+)["']?\]`)

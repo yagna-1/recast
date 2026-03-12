@@ -67,8 +67,10 @@ func TestSummarizeOutput(t *testing.T) {
 }
 
 func TestCanSkipRuntimeFailure(t *testing.T) {
-	assert.True(t, canSkipRuntimeFailure("No tests found"))
-	assert.True(t, canSkipRuntimeFailure("Make sure that arguments are regular expressions matching test files"))
+	assert.True(t, canSkipRuntimeFailure("Cannot find module '@playwright/test'"))
+	assert.True(t, canSkipRuntimeFailure("browserType.launch: Executable doesn't exist"))
+	assert.True(t, canSkipRuntimeFailure("please run the following command to download new browsers"))
+	assert.False(t, canSkipRuntimeFailure("No tests found"))
 	assert.False(t, canSkipRuntimeFailure("some unrelated failure"))
 }
 

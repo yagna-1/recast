@@ -14,8 +14,11 @@ import (
 	ir "github.com/yagna-1/recast/recast-ir"
 )
 
-const version = "0.1.0"
-const buildCommit = "dev"
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
 
 func main() {
 	if err := rootCmd.Execute(); err != nil {
@@ -315,7 +318,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print version information",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("recast %s (%s)\n", version, buildCommit)
+		fmt.Printf("recast %s (%s, %s)\n", version, commit, date)
 	},
 }
 

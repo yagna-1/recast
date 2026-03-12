@@ -257,9 +257,21 @@ func summarizeOutput(out string, maxLines int) string {
 
 func canSkipRuntimeFailure(out string) bool {
 	l := strings.ToLower(out)
-	return strings.Contains(l, "no tests found") ||
-		strings.Contains(l, "make sure that arguments are regular expressions matching test files") ||
-		strings.Contains(l, "playwright test")
+	needles := []string{
+		"cannot find module '@playwright/test'",
+		"command not found",
+		"is not recognized as an internal or external command",
+		"executable doesn't exist",
+		"please run the following command to download new browsers",
+		"failed to install browsers",
+		"failed to download",
+	}
+	for _, needle := range needles {
+		if strings.Contains(l, needle) {
+			return true
+		}
+	}
+	return false
 }
 
 func runtimeVerifyEnv() []string {
