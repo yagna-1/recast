@@ -1,0 +1,73 @@
+name: Bug Report
+description: Something is broken or behaving unexpectedly
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill in the details below.
+
+  - type: input
+    id: version
+    attributes:
+      label: recast version
+      description: Output of `recast version`
+      placeholder: "e.g. recast v0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: input_format
+    attributes:
+      label: Input format
+      options:
+        - workflow-use JSON
+        - HAR
+        - CDP event log
+        - MCP tool call log
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command used
+      description: The exact `recast` command you ran
+      placeholder: "recast compile workflow.json -t playwright-ts"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the full output / error message
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: input_sample
+    attributes:
+      label: Minimal input sample
+      description: A trimmed-down version of the input file that reproduces the issue (remove any credentials)
+      render: json
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I have removed all credentials from the input sample
+          required: true

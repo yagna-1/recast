@@ -19,6 +19,9 @@
   <a href="https://github.com/yagna-1/recast/actions/workflows/ci.yml">
     <img src="https://img.shields.io/github/actions/workflow/status/yagna-1/recast/ci.yml?label=CI" alt="CI status" />
   </a>
+  <a href="https://github.com/yagna-1/recast/issues?q=is%3Aopen+label%3A%22good+first+issue%22">
+    <img src="https://img.shields.io/github/issues/yagna-1/recast/good%20first%20issue?label=good%20first%20issues&color=7057ff" alt="Good first issues" />
+  </a>
 </p>
 
 `recast` is a compiler that takes AI browser agent recordings and emits clean, readable, static Playwright test code - with no LLM required at replay time, no proprietary runtime dependencies, and no magic.
@@ -35,6 +38,41 @@ MCP tool call log  ──┘
 AI browser agents (workflow-use, browser-use, Skyvern, Operator) re-reason through browser tasks at runtime — burning LLM tokens on every step, every run, forever. Recorded workflows are locked to proprietary runtimes and can't be committed to CI pipelines, reviewed by developers, or diff-ed.
 
 `recast` fills the gap: compile once, run forever, on plain Playwright.
+
+## Demo
+
+```
+$ recast compile login_workflow.json
+
+recast: INFO  detected format: workflow-use JSON
+recast: INFO  parsed 5 steps
+recast: INFO  [dedup] removed 0 duplicate steps
+recast: INFO  [selector] hardened 2 selector(s)
+recast: INFO  [waits] injected 3 explicit wait(s)
+recast: INFO  [sanitize] 2 credential(s) replaced with environment variables
+recast: INFO  [branch] no conditional branches detected
+recast: INFO  [emit] wrote playwright-ts to ./recast-out/test_login_workflow.spec.ts
+recast: INFO  [emit] wrote .env.example to ./recast-out/.env.example
+
+$ cat ./recast-out/test_login_workflow.spec.ts
+```
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('login_workflow', async ({ page }) => {
+  await page.goto('https://app.example.com/login');
+  await page.waitForLoadState('networkidle');
+
+  await page.locator('#email').fill(process.env.TEST_EMAIL!);
+  await page.locator('#password').fill(process.env.TEST_PASSWORD!);
+
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.waitForNavigation({ timeout: 10000 });
+
+  await page.locator('.dashboard').waitFor({ state: 'visible', timeout: 30000 });
+});
+```
 
 ## Install
 
@@ -265,7 +303,9 @@ See `.github/workflows/ci.yml`.
 
 ## Contributing
 
-See `CONTRIBUTING.md` for development workflow and PR expectations.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for development workflow and PR expectations.
+
+First-time contributor? Look for issues labeled [**`good first issue`**](https://github.com/yagna-1/recast/issues?q=is%3Aopen+label%3A%22good+first+issue%22) — each one has a step-by-step guide.
 
 ### Project structure
 
@@ -282,6 +322,10 @@ recast/
 └── testdata/            # Fixtures and golden files
 ```
 
+## Code of Conduct
+
+This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to uphold these standards.
+
 ## License
 
-MIT
+MIT — see [`LICENSE`](LICENSE).

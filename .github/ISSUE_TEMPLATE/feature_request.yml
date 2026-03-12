@@ -1,0 +1,55 @@
+name: Feature Request
+description: Suggest a new input format, output target, optimizer pass, or CLI flag
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea! Please describe it clearly so we can evaluate and prioritize it.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: What part of recast does this relate to?
+      options:
+        - New input format
+        - New output target (emitter)
+        - Optimizer pass
+        - CLI flag / UX
+        - recast-ir library
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or motivation
+      description: What problem does this solve? What workflow is blocked or painful today?
+      placeholder: "When I compile a ____ trace, I cannot ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe what you'd like to see, including example commands or output
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds you've tried or other approaches you considered
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true

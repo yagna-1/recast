@@ -1,0 +1,67 @@
+name: Good First Issue
+description: A well-scoped task suitable for first-time contributors
+labels: ["good first issue", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This template is for maintainers filing issues that are ideal for first-time contributors.
+        A good first issue must be **fully self-contained** — someone unfamiliar with the codebase
+        should be able to complete it by following the steps below alone.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One or two sentences describing what needs to be done
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background / motivation
+      description: Why is this change needed? Link to related issues or discussions if any.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Step-by-step guide
+      description: |
+        List exact steps a new contributor should follow. Include:
+        - Which file(s) to edit
+        - What the change looks like
+        - How to test it (`make test`, specific test name, etc.)
+      placeholder: |
+        1. Fork the repo and clone it locally
+        2. Open `internal/ingestion/foo.go`
+        3. Add a new case to the switch on line 42 that handles ...
+        4. Run `make test` — all tests should pass
+        5. Open a PR with the title "feat: ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: How will we know the issue is done?
+      placeholder: |
+        - [ ] `make test` passes
+        - [ ] `recast compile <example>` produces the expected output
+    validations:
+      required: true
+
+  - type: input
+    id: difficulty
+    attributes:
+      label: Estimated effort
+      placeholder: "e.g. ~1 hour, ~half a day"
+
+  - type: input
+    id: mentor
+    attributes:
+      label: Mentor / point of contact
+      placeholder: "@yagna-1 is happy to answer questions in the PR"
