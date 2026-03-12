@@ -238,3 +238,41 @@ func TestPlaywrightTS_WaitNetworkIdle(t *testing.T) {
 	require.NoError(t, err)
 	assert.Contains(t, result.TestFile, "waitForLoadState('networkidle')")
 }
+
+func TestPlaywrightTS_EscapesNewlineAndQuotes(t *testing.T) {
+	e := &emitter.PlaywrightTSEmitter{}
+	trace := &ir.Trace{
+		Name:          "escape_multiline",
+		SchemaVersion: ir.SchemaVersion,
+		Steps: []ir.Step{
+			{
+				ID:     "s1",
+				Type:   ir.StepFill,
+				Target: ir.TargetFromCSS("#note", ""),
+				Value:  "line1\nline2 \"quoted\"",
+			},
+		},
+	}
+	result, err := e.Emit(trace, nil)
+	require.NoError(t, err)
+	assert.Contains(t, result.TestFile, `fill("line1\nline2 \"quoted\"")`)
+}
+
+func TestPlaywrightPy_EscapesNewlineAndQuotes(t *testing.T) {
+	e := &emitter.PlaywrightPyEmitter{}
+	trace := &ir.Trace{
+		Name:          "escape_multiline_py",
+		SchemaVersion: ir.SchemaVersion,
+		Steps: []ir.Step{
+			{
+				ID:     "s1",
+				Type:   ir.StepFill,
+				Target: ir.TargetFromCSS("#note", ""),
+				Value:  "line1\nline2 \"quoted\"",
+			},
+		},
+	}
+	result, err := e.Emit(trace, nil)
+	require.NoError(t, err)
+	assert.Contains(t, result.TestFile, `fill("line1\nline2 \"quoted\"")`)
+}

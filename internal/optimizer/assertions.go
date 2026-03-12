@@ -18,6 +18,9 @@ func runAssertionInjection(trace *ir.Trace) (*ir.Trace, []ir.Warning) {
 		result = append(result, step)
 
 		var assertion *ir.Step
+		if hasFollowingAssertion(trace.Steps, i) {
+			continue
+		}
 
 		switch step.Type {
 		case ir.StepNavigate:
@@ -87,6 +90,13 @@ func runAssertionInjection(trace *ir.Trace) (*ir.Trace, []ir.Warning) {
 	out := *trace
 	out.Steps = result
 	return &out, warnings
+}
+
+func hasFollowingAssertion(steps []ir.Step, idx int) bool {
+	if idx+1 >= len(steps) {
+		return false
+	}
+	return steps[idx+1].Type == ir.StepAssert
 }
 
 func detectLoginSequence(steps []ir.Step) bool {

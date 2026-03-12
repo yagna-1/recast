@@ -3,6 +3,7 @@ package optimizer_test
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -210,4 +211,128 @@ func TestPipeline_DefaultOptions(t *testing.T) {
 	assert.Contains(t, result.EnvVars, "TEST_EMAIL")
 
 	assert.Equal(t, ir.WaitNetworkIdle, result.Trace.Steps[0].Wait.Type)
+}
+
+func TestSelectorHardening_Idempotent(t *testing.T) {
+	trace := makeTrace(
+		ir.Step{
+			ID:   "step_001",
+			Type: ir.StepClick,
+			Target: &ir.Target{
+				Primary: ir.Locator{
+					Strategy:   ir.LocatorCSS,
+					Value:      `[aria-label="Email"]`,
+					Confidence: 0.5,
+				},
+			},
+		},
+	)
+	opts := optimizer.Options{HardenSelectors: true}
+	result1 := optimizer.Run(trace, opts)
+	result2 := optimizer.Run(result1.Trace, opts)
+
+	assert.Equal(t, result1.Trace.Steps[0].Target.Primary, result2.Trace.Steps[0].Target.Primary)
+	assert.Equal(t, len(result1.Trace.Steps[0].Target.Fallbacks), len(result2.Trace.Steps[0].Target.Fallbacks))
+}
+
+func TestBranchDetection_Idempotent(t *testing.T) {
+	trace := makeTrace(
+		ir.Step{
+			ID:   "step_001",
+			Type: ir.StepClick,
+			Target: &ir.Target{
+				Primary:          ir.Locator{Strategy: ir.LocatorCSS, Value: ".cookie-consent-close", Confidence: 0.5},
+				HumanDescription: "close cookie dialog",
+			},
+		},
+		ir.Step{
+			ID:   "step_002",
+			Type: ir.StepClick,
+			Target: &ir.Target{
+				Primary:          ir.Locator{Strategy: ir.LocatorCSS, Value: ".cookie-consent-accept", Confidence: 0.5},
+				HumanDescription: "accept cookie dialog",
+			},
+		},
+		ir.Step{
+			ID:    "step_003",
+			Type:  ir.StepNavigate,
+			Value: "https://example.com/dashboard",
+		},
+	)
+	opts := optimizer.Options{DetectBranches: true}
+	result1 := optimizer.Run(trace, opts)
+	result2 := optimizer.Run(result1.Trace, opts)
+
+	assert.Equal(t, len(result1.Trace.Steps), len(result2.Trace.Steps))
+	assert.Equal(t, result1.Trace.Steps[0].Type, result2.Trace.Steps[0].Type)
+}
+
+func TestAssertionInjection_Idempotent(t *testing.T) {
+	trace := makeTrace(
+		navStep("step_001", "https://example.com/login"),
+		fillStep("step_002", "#email", "process.env.TEST_EMAIL"),
+		fillStep("step_003", "#password", "process.env.TEST_PASSWORD"),
+		ir.Step{
+			ID:   "step_004",
+			Type: ir.StepClick,
+			Target: &ir.Target{
+				Primary: ir.Locator{
+					Strategy: ir.LocatorRole,
+					Value:    `role=button[name="Sign in"]`,
+				},
+				HumanDescription: "the Sign in button",
+			},
+		},
+	)
+	opts := optimizer.Options{InjectAssertions: true}
+	result1 := optimizer.Run(trace, opts)
+	result2 := optimizer.Run(result1.Trace, opts)
+
+	assert.Equal(t, len(result1.Trace.Steps), len(result2.Trace.Steps))
+}
+
+func TestPipeline_LargeWorkflowPerformance(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip perf stress test in short mode")
+	}
+
+	steps := make([]ir.Step, 0, 10000)
+	for i := 0; i < 10000; i++ {
+		id := fmt.Sprintf("step_%05d", i+1)
+		switch i % 3 {
+		case 0:
+			steps = append(steps, ir.Step{
+				ID:    id,
+				Type:  ir.StepNavigate,
+				Value: "https://example.com",
+			})
+		case 1:
+			steps = append(steps, ir.Step{
+				ID:   id,
+				Type: ir.StepFill,
+				Target: &ir.Target{
+					Primary: ir.Locator{Strategy: ir.LocatorCSS, Value: "#email", Confidence: 0.5},
+				},
+				Value: "user@example.com",
+			})
+		default:
+			steps = append(steps, ir.Step{
+				ID:   id,
+				Type: ir.StepClick,
+				Target: &ir.Target{
+					Primary: ir.Locator{Strategy: ir.LocatorCSS, Value: "button[type=submit]", Confidence: 0.5},
+				},
+			})
+		}
+	}
+
+	trace := &ir.Trace{Name: "perf_10k", SchemaVersion: ir.SchemaVersion, Steps: steps}
+	start := time.Now()
+	result := optimizer.Run(trace, optimizer.DefaultOptions())
+	elapsed := time.Since(start)
+
+	require.NotNil(t, result)
+	require.NotNil(t, result.Trace)
+	assert.NotEmpty(t, result.Trace.Steps)
+	assert.Less(t, elapsed, 8*time.Second, "optimizer should handle 10k-step workflows without pathological slowdown")
 }
