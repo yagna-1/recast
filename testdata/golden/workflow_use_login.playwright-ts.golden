@@ -1,23 +1,23 @@
 import { test, expect } from '@playwright/test';
 
 test('login_and_download', async ({ page }) => {
-  await page.goto('https://app.example.com/login');
+  await page.goto("https://app.example.com/login");
   await page.waitForLoadState('networkidle');
 
   // sanitized → TEST_EMAIL (detected: email pattern)
   // the email input field
-  await page.locator('#email').fill(process.env.TEST_EMAIL!);
+  await page.locator("#email").fill(process.env.TEST_EMAIL!);
 
   // the password input field
-  await page.locator('#password').fill('hunter2');
+  await page.locator("#password").fill("hunter2");
 
   // the Sign in button
-  await page.locator('button[type=submit]').click();
+  await page.locator("button[type=submit]").click();
   await page.waitForNavigation({ timeout: 10000 });
 
-  await page.locator('.dashboard').waitFor({ state: 'visible', timeout: 30000 });
+  await page.locator(".dashboard").waitFor({ state: 'visible', timeout: 30000 });
 
   // the Download invoice link
-  await page.locator('a.download-invoice').click();
+  await page.locator("a.download-invoice").click();
 
 });

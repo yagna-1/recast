@@ -1,27 +1,27 @@
 import { test, expect } from '@playwright/test';
 
 test('mcp_workflow', async ({ page }) => {
-  await page.goto('https://app.example.com');
+  await page.goto("https://app.example.com");
   await page.waitForLoadState('networkidle');
 
   // Login button
-  await page.getByTestId('login-btn')
-      .or(page.locator('[data-testid="login-btn"]'))
+  await page.getByTestId("login-btn")
+      .or(page.locator("[data-testid=\"login-btn\"]"))
     .click();
-  await page.waitForSelector('#email', { timeout: 5000 });
+  await page.waitForSelector("#email", { timeout: 5000 });
 
   // sanitized → TEST_EMAIL (detected: email pattern)
   // email field
-  await page.locator('#email').fill(process.env.TEST_EMAIL!);
+  await page.locator("#email").fill(process.env.TEST_EMAIL!);
 
   // sanitized → TEST_PASSWORD (detected: password pattern)
   // password field
-  await page.locator('#password').fill(process.env.TEST_PASSWORD!);
+  await page.locator("#password").fill(process.env.TEST_PASSWORD!);
 
   // Submit button
-  await page.locator('button[type=submit]').click();
+  await page.locator("button[type=submit]").click();
   await page.waitForNavigation({ timeout: 10000 });
 
-  await page.screenshot({ path: 'screenshot.png' });
+  await page.screenshot({ path: "screenshot.png" });
 
 });

@@ -2,6 +2,7 @@ package emitter
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	ir "github.com/yagna-1/recast/recast-ir"
@@ -66,6 +67,9 @@ func (e *PlaywrightPyEmitter) emitStep(step ir.Step) []string {
 
 	case ir.StepClick:
 		loc := e.locatorExpr(step)
+		if strings.Contains(loc, ".first") {
+			lines = append(lines, "    # WARNING: auto-selected first matching element for a likely multi-match selector\n")
+		}
 		lines = append(lines, fmt.Sprintf("    %s.click()\n", loc))
 		lines = append(lines, e.emitWait(step.Wait))
 
@@ -152,7 +156,7 @@ func (e *PlaywrightPyEmitter) locatorExpr(step ir.Step) string {
 		if step.Target.Context.FrameTarget != nil {
 			frameSel := step.Target.Context.FrameTarget.Primary.Value
 			inner := renderSingleLocatorPy(step.Target.Primary)
-			inner = strings.Replace(inner, "page.", fmt.Sprintf(`page.frame_locator("%s").`, escapePy(frameSel)), 1)
+			inner = strings.Replace(inner, "page.", fmt.Sprintf("page.frame_locator(%s).", pyString(frameSel)), 1)
 			return inner
 		}
 	}
@@ -237,7 +241,5 @@ func (e *PlaywrightPyEmitter) emitBranch(step ir.Step) []string {
 }
 
 func pyString(s string) string {
-	escaped := strings.ReplaceAll(s, `\`, `\\`)
-	escaped = strings.ReplaceAll(escaped, `"`, `\"`)
-	return fmt.Sprintf(`"%s"`, escaped)
+	return strconv.Quote(s)
 }

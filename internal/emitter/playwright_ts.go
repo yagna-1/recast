@@ -60,8 +60,12 @@ func (e *PlaywrightTSEmitter) emitStep(step ir.Step) []string {
 
 	case ir.StepClick:
 		loc := e.locatorExpr(step)
+		if strings.Contains(loc, ".first()") {
+			lines = append(lines, "  // WARNING: auto-selected first matching element for a likely multi-match selector\n")
+		}
 		clickSuffix := ".click()"
 		if shouldForceClick(step) {
+			lines = append(lines, "  // WARNING: force click enabled for hidden input selector\n")
 			clickSuffix = ".click({ force: true })"
 		}
 		if strings.Contains(loc, "\n") {

@@ -37,12 +37,21 @@ func Detect(path string, data []byte) (Ingester, error) {
 }
 
 func ParseFile(path string) (*ir.Trace, string, error) {
+	const maxSize = 52_428_800 // 50 MB
+
+	// Guard file size before loading into memory.
+	if info, err := os.Stat(path); err == nil {
+		if info.Size() > maxSize {
+			return nil, "", fmt.Errorf("ingestion: file %q exceeds 50MB limit (%d bytes)", path, info.Size())
+		}
+	}
+
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, "", fmt.Errorf("ingestion: cannot read %q: %w", path, err)
 	}
 
-	const maxSize = 52_428_800 // 50 MB
+	// Keep a post-read check as a fallback for non-regular paths.
 	if len(data) > maxSize {
 		return nil, "", fmt.Errorf("ingestion: file %q exceeds 50MB limit (%d bytes)", path, len(data))
 	}

@@ -3,6 +3,7 @@ package emitter
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	ir "github.com/yagna-1/recast/recast-ir"
@@ -54,9 +55,8 @@ func AllTargets() string {
 }
 
 func jsString(s string) string {
-	escaped := strings.ReplaceAll(s, `\`, `\\`)
-	escaped = strings.ReplaceAll(escaped, "'", `\'`)
-	return fmt.Sprintf("'%s'", escaped)
+	// strconv.Quote handles control chars, newlines, unicode, and quotes safely.
+	return strconv.Quote(s)
 }
 
 func jsEnvOrString(s string) string {
@@ -69,10 +69,9 @@ func jsEnvOrString(s string) string {
 func pyEnvOrString(s string) string {
 	if strings.HasPrefix(s, "process.env.") {
 		varName := strings.TrimPrefix(s, "process.env.")
-		return fmt.Sprintf(`os.environ["%s"]`, varName)
+		return fmt.Sprintf("os.environ[%s]", pyString(varName))
 	}
-	escaped := strings.ReplaceAll(s, `"`, `\"`)
-	return fmt.Sprintf(`"%s"`, escaped)
+	return pyString(s)
 }
 
 func renderLocatorTS(target *ir.Target) string {
@@ -104,9 +103,9 @@ func renderSingleLocatorTS(loc ir.Locator) string {
 	case ir.LocatorRole:
 		role, name := parseRoleLocator(loc.Value)
 		if name != "" {
-			return fmt.Sprintf("page.getByRole('%s', { name: %s })", role, jsString(name))
+			return fmt.Sprintf("page.getByRole(%s, { name: %s })", jsString(role), jsString(name))
 		}
-		return fmt.Sprintf("page.getByRole('%s')", role)
+		return fmt.Sprintf("page.getByRole(%s)", jsString(role))
 
 	case ir.LocatorLabel:
 		return fmt.Sprintf("page.getByLabel(%s)", jsString(loc.Value))
@@ -149,34 +148,34 @@ func renderSingleLocatorPy(loc ir.Locator) string {
 	switch loc.Strategy {
 	case ir.LocatorTestID:
 		if id := extractAttrValue(loc.Value, "data-testid"); id != "" {
-			return fmt.Sprintf(`page.get_by_test_id("%s")`, id)
+			return fmt.Sprintf("page.get_by_test_id(%s)", pyString(id))
 		}
-		return fmt.Sprintf(`page.locator("%s")`, loc.Value)
+		return fmt.Sprintf("page.locator(%s)", pyString(loc.Value))
 
 	case ir.LocatorRole:
 		role, name := parseRoleLocator(loc.Value)
 		if name != "" {
-			return fmt.Sprintf(`page.get_by_role("%s", name="%s")`, role, name)
+			return fmt.Sprintf("page.get_by_role(%s, name=%s)", pyString(role), pyString(name))
 		}
-		return fmt.Sprintf(`page.get_by_role("%s")`, role)
+		return fmt.Sprintf("page.get_by_role(%s)", pyString(role))
 
 	case ir.LocatorLabel:
-		return fmt.Sprintf(`page.get_by_label("%s")`, escapePy(loc.Value))
+		return fmt.Sprintf("page.get_by_label(%s)", pyString(loc.Value))
 
 	case ir.LocatorText:
-		return fmt.Sprintf(`page.get_by_text("%s")`, escapePy(loc.Value))
+		return fmt.Sprintf("page.get_by_text(%s)", pyString(loc.Value))
 
 	case ir.LocatorAltText:
-		return fmt.Sprintf(`page.get_by_alt_text("%s")`, escapePy(loc.Value))
+		return fmt.Sprintf("page.get_by_alt_text(%s)", pyString(loc.Value))
 
 	case ir.LocatorTitle:
-		return fmt.Sprintf(`page.get_by_title("%s")`, escapePy(loc.Value))
+		return fmt.Sprintf("page.get_by_title(%s)", pyString(loc.Value))
 
 	case ir.LocatorPlaceholder:
-		return fmt.Sprintf(`page.get_by_placeholder("%s")`, escapePy(loc.Value))
+		return fmt.Sprintf("page.get_by_placeholder(%s)", pyString(loc.Value))
 
 	default:
-		base := fmt.Sprintf(`page.locator("%s")`, escapePy(loc.Value))
+		base := fmt.Sprintf("page.locator(%s)", pyString(loc.Value))
 		if isLikelyMultiMatchSelector(loc.Value) {
 			return base + ".first"
 		}
@@ -229,10 +228,6 @@ func extractAttrValue(selector, attr string) string {
 		return rest[:end]
 	}
 	return rest
-}
-
-func escapePy(s string) string {
-	return strings.ReplaceAll(s, `"`, `\"`)
 }
 
 func isLikelyMultiMatchSelector(sel string) bool {

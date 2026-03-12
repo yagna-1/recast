@@ -31,11 +31,11 @@ func TestPlaywrightTS_Emit_ValidTrace(t *testing.T) {
 	code := result.TestFile
 	assert.Contains(t, code, "import { test, expect } from '@playwright/test'")
 	assert.Contains(t, code, "test('login_test'")
-	assert.Contains(t, code, "page.goto('https://example.com/login')")
-	assert.Contains(t, code, "page.getByLabel('Email')")
+	assert.Contains(t, code, `page.goto("https://example.com/login")`)
+	assert.Contains(t, code, `page.getByLabel("Email")`)
 	assert.Contains(t, code, "process.env.TEST_EMAIL!")
 	assert.Contains(t, code, "process.env.TEST_PASSWORD!")
-	assert.Contains(t, code, "page.getByRole('button', { name: 'Sign in' })")
+	assert.Contains(t, code, `page.getByRole("button", { name: "Sign in" })`)
 }
 
 func TestPlaywrightTS_AllStepTypes(t *testing.T) {
@@ -197,6 +197,27 @@ func TestPlaywrightTS_SingleQuoteEscape(t *testing.T) {
 	result, err := e.Emit(trace, nil)
 	require.NoError(t, err)
 	assert.False(t, strings.Contains(result.TestFile, "fill('it's a test')"))
+	assert.Contains(t, result.TestFile, `fill("it's a test")`)
+}
+
+func TestPlaywrightTS_AddsWarningsForFallbackClickBehavior(t *testing.T) {
+	e := &emitter.PlaywrightTSEmitter{}
+	trace := &ir.Trace{
+		Name:          "click_warning_test",
+		SchemaVersion: ir.SchemaVersion,
+		Steps: []ir.Step{
+			{
+				ID:     "s1",
+				Type:   ir.StepClick,
+				Target: ir.TargetFromCSS(`input[type="radio"]`, "radio option"),
+			},
+		},
+	}
+	result, err := e.Emit(trace, nil)
+	require.NoError(t, err)
+	assert.Contains(t, result.TestFile, "WARNING: auto-selected first matching element")
+	assert.Contains(t, result.TestFile, "WARNING: force click enabled for hidden input selector")
+	assert.Contains(t, result.TestFile, `.first().click({ force: true })`)
 }
 
 func TestPlaywrightTS_WaitNetworkIdle(t *testing.T) {
