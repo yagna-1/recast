@@ -21,6 +21,7 @@ var registry []Ingester
 func init() {
 	registry = []Ingester{
 		&WorkflowUseIngester{},
+		&AstraGraphAuditIngester{},
 		&MCPIngester{},
 		&CDPIngester{},
 		&HARIngester{},
@@ -37,6 +38,14 @@ func Detect(path string, data []byte) (Ingester, error) {
 }
 
 func ParseFile(path string) (*ir.Trace, string, error) {
+	return parseFile(path, "")
+}
+
+func ParseFileWithFormat(path string, from string) (*ir.Trace, string, error) {
+	return parseFile(path, from)
+}
+
+func parseFile(path string, from string) (*ir.Trace, string, error) {
 	const maxSize = 52_428_800 // 50 MB
 
 	// Guard file size before loading into memory.
@@ -56,9 +65,17 @@ func ParseFile(path string) (*ir.Trace, string, error) {
 		return nil, "", fmt.Errorf("ingestion: file %q exceeds 50MB limit (%d bytes)", path, len(data))
 	}
 
-	ing, err := Detect(path, data)
-	if err != nil {
-		return nil, "", err
+	var ing Ingester
+	if from != "" {
+		ing, err = ingesterByFormat(from)
+		if err != nil {
+			return nil, "", err
+		}
+	} else {
+		ing, err = Detect(path, data)
+		if err != nil {
+			return nil, "", err
+		}
 	}
 
 	trace, err := ing.Parse(data)
@@ -67,6 +84,41 @@ func ParseFile(path string) (*ir.Trace, string, error) {
 	}
 
 	return trace, ing.FormatName(), nil
+}
+
+func ingesterByFormat(from string) (Ingester, error) {
+	switch normalizeFormat(from) {
+	case "workflow-use", "workflow_use", "workflow":
+		return &WorkflowUseIngester{}, nil
+	case "har":
+		return &HARIngester{}, nil
+	case "cdp":
+		return &CDPIngester{}, nil
+	case "mcp":
+		return &MCPIngester{}, nil
+	case "astragraph-audit", "astragraph_audit", "astragraph":
+		return &AstraGraphAuditIngester{}, nil
+	default:
+		return nil, fmt.Errorf("ingestion: unsupported --from %q", from)
+	}
+}
+
+func normalizeFormat(s string) string {
+	return normalizeDashesAndCase(s)
+}
+
+func normalizeDashesAndCase(s string) string {
+	out := make([]rune, 0, len(s))
+	for _, r := range s {
+		if r >= 'A' && r <= 'Z' {
+			r = r - 'A' + 'a'
+		}
+		if r == '_' {
+			r = '-'
+		}
+		out = append(out, r)
+	}
+	return string(out)
 }
 
 func AllFormats() []FormatInfo {

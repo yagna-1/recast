@@ -45,7 +45,7 @@ var rootCmd = &cobra.Command{
 	SilenceErrors: false,
 	Long: `recast compiles AI browser agent recordings into clean, static Playwright test code.
 
-Supported input formats: workflow-use JSON, HAR, CDP event log, MCP tool call log
+Supported input formats: workflow-use JSON, HAR, CDP event log, MCP tool call log, AstraGraph audit trail
 Supported output targets: playwright-ts, playwright-py, ir-json
 
 Example:
@@ -58,6 +58,7 @@ Example:
 var (
 	compileOutput      string
 	compileTarget      string
+	compileFrom        string
 	compileNoOptimize  bool
 	compileNoHarden    bool
 	compileAssertions  bool
@@ -77,6 +78,7 @@ func init() {
 	compileCmd.Flags().StringVarP(&compileOutput, "output", "o", "./recast-out/", "Output directory")
 	compileCmd.Flags().StringVarP(&compileTarget, "target", "t", "playwright-ts",
 		"Output target: playwright-ts, playwright-py, ir-json")
+	compileCmd.Flags().StringVar(&compileFrom, "from", "", "Force input format: workflow-use, har, cdp, mcp, astragraph-audit")
 	compileCmd.Flags().BoolVar(&compileNoOptimize, "no-optimize", false, "Skip all optimizer passes")
 	compileCmd.Flags().BoolVar(&compileNoHarden, "no-harden", false, "Skip selector hardening")
 	compileCmd.Flags().BoolVar(&compileAssertions, "inject-assertions", false, "Inject post-action assertions")
@@ -91,7 +93,14 @@ func runCompile(cmd *cobra.Command, args []string) error {
 
 	logInfo("detected format: detecting...")
 
-	trace, formatName, err := ingestion.ParseFile(inputPath)
+	var trace *ir.Trace
+	var formatName string
+	var err error
+	if compileFrom != "" {
+		trace, formatName, err = ingestion.ParseFileWithFormat(inputPath, compileFrom)
+	} else {
+		trace, formatName, err = ingestion.ParseFile(inputPath)
+	}
 	if err != nil {
 		logError("", "ingestion", err.Error())
 		return &exitError{code: 3}

@@ -178,6 +178,40 @@ func TestMCP_Parse_Valid(t *testing.T) {
 	assert.Equal(t, ir.StepClick, trace.Steps[1].Type)
 }
 
+func TestAstraGraphAudit_Parse_Valid(t *testing.T) {
+	data := []byte(`[
+		{
+			"workflow_id": "wf-weather",
+			"agent_id": "weather-agent",
+			"tool_name": "browser_navigate",
+			"arguments": {"url": "https://example.com/weather"},
+			"status": "allowed",
+			"deviation_score": 0.12,
+			"timestamp": "2026-03-14T10:00:00Z"
+		},
+		{
+			"workflow_id": "wf-weather",
+			"agent_id": "weather-agent",
+			"tool_name": "browser_click",
+			"arguments": {"selector": "#export", "element": "Export Data"},
+			"status": "blocked",
+			"rule_id": "rule-export-block",
+			"deviation_score": 0.91,
+			"timestamp": "2026-03-14T10:00:02Z"
+		}
+	]`)
+	ing := &ingestion.AstraGraphAuditIngester{}
+	require.True(t, ing.CanHandle("astragraph-audit.json", data))
+	trace, err := ing.Parse(data)
+	require.NoError(t, err)
+	require.Len(t, trace.Steps, 2)
+	assert.Equal(t, "wf_weather", trace.Name)
+	assert.Equal(t, ir.StepNavigate, trace.Steps[0].Type)
+	assert.Equal(t, ir.StepClick, trace.Steps[1].Type)
+	assert.Contains(t, trace.Steps[1].Comment, "BLOCKED by AstraGraph")
+	assert.Contains(t, trace.Steps[1].Comment, "rule-export-block")
+}
+
 func TestAllFormats(t *testing.T) {
 	formats := ingestion.AllFormats()
 	assert.Greater(t, len(formats), 0)
@@ -189,4 +223,5 @@ func TestAllFormats(t *testing.T) {
 	assert.Contains(t, names, "HAR (HTTP Archive)")
 	assert.Contains(t, names, "CDP Event Log")
 	assert.Contains(t, names, "MCP Tool Call Log")
+	assert.Contains(t, names, "AstraGraph Audit Trail")
 }
