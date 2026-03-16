@@ -1,0 +1,27 @@
+name: recast
+version: 1.0.0
+model: claude-sonnet-4-6
+
+identity:
+  policy_id: recast-default
+  namespace: recast
+  workflow_id_prefix: rc-
+
+tools:
+  - name: compile-audit
+    endpoint: local://recast/compile
+
+skills:
+  - compile
+  - validate
+  - verify
+
+hooks:
+  pre-run: hooks/pre-run.sh
+  post-run: hooks/post-run.sh
+
+memory:
+  path: memory/
+  auto_commit: true
+  commit_message: "agent: auto-commit {skill} trace at {timestamp}"
+  human_review: pr

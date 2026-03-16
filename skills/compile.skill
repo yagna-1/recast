@@ -1,0 +1,5 @@
+name: compile
+description: Compile audit JSON into Playwright suites
+command: go run ./cmd/recast compile --help
+auto_commit_memory: true
+produces: [memory/recast-tests/]

@@ -1,0 +1,5 @@
+name: verify
+description: Verify generated outputs remain deterministic
+command: go test ./... -count=1
+auto_commit_memory: true
+on_failure: hooks/on-failure.sh

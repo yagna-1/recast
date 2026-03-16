@@ -1,0 +1,4 @@
+name: validate
+description: Validate recast configuration and schema coverage
+command: go test ./... -run Test
+auto_commit_memory: true
